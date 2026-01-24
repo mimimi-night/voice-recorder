@@ -2,7 +2,14 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>録音アプリ</title>
+    <title>シンプル録音メモくん</title>
+<meta name="description" content="ブラウザだけで音声を録音・文字起こし・保存。無料は3件まで、無制限版で保存し放題。">
+<link rel="canonical" href="https://mimimi-night.github.io/voice-recorder/">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="シンプル録音メモくん">
+<meta property="og:description" content="録音・文字起こし・保存。無料3件／無制限版あり。">
+<meta property="og:url" content="https://mimimi-night.github.io/voice-recorder/">
+<meta property="og:type" content="website">
     <style>
         body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 20px; }
         h1 { text-align: center; }
@@ -15,11 +22,21 @@
     </style>
 </head>
 <body>
-    <h1>🎤 録音アプリ</h1>
-
+    <h1>シンプル録音メモ</h1>
+<div id="planBar" style="max-width:900px;margin:10px auto 0;padding:10px;border:1px solid #ddd;border-radius:8px;background:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px;">
+  <div id="planText">現在: 無料版（残り <span id="remain">3</span> 件）</div>
+  <a id="buyLink" href="https://buy.stripe.com/test_eVqbJ11I50QIbul3a2gMw00" target="_blank" rel="noopener" style="background:#111;color:#fff;text-decoration:none;padding:8px 14px;border-radius:8px;">無制限版にする（¥500）</a>
+</div>
     <div id="controls">
         <button id="startBtn">録音開始</button>
         <button id="stopBtn" disabled>録音停止</button>
+        
+        <a id="buyLink"
+   href="https://buy.stripe.com/test_eVqbJ11I50QIbul3a2gMw00"
+   target="_blank" rel="noopener"
+   style="margin-left:8px; text-decoration:underline;">
+  無制限版を購入
+</a>
         <select id="sortSelect">
             <option value="newest">新しい順</option>
             <option value="oldest">古い順</option>
@@ -70,7 +87,20 @@
         let mediaRecorder;
         let audioChunks = [];
         let recordings = JSON.parse(localStorage.getItem("recordings") || "[]");
-
+const FREE_LIMIT = 3;
+let isPro = localStorage.getItem('isPro') === '1';
+        
+const buyLink = document.getElementById('buyLink');
+if (isPro && buyLink) buyLink.style.display = 'none';
+        
+// ?pro=1 で着地したら無制限を有効化（テスト運用用）
+const params = new URLSearchParams(location.search);
+if (params.get('pro') === '1') {
+  localStorage.setItem('isPro', '1');
+  isPro = true;
+  history.replaceState({}, '', location.pathname); // URLをきれいに戻す
+}
+        
         // 録音番号を過去データから計算
         let recordingCount = recordings.length > 0
             ? Math.max(...recordings.map(r => parseInt(r.title.replace("録音 ", ""))))
@@ -128,6 +158,12 @@
         initRecorder();
 
         startBtn.addEventListener('click', () => {
+              // 無料版の保存上限チェック
+  if (!isPro && recordings.length >= FREE_LIMIT) {
+    alert(`無料版は ${FREE_LIMIT} 件まで保存できます。無制限版のご利用をご検討ください。`);
+    return;
+  }
+            
             if (mediaRecorder && mediaRecorder.state === "inactive") {
                 mediaRecorder.start();
             }
