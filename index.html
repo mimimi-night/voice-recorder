@@ -140,7 +140,6 @@ function updatePlanUI() {
 }
         
 // ?pro=1 で着地したら無制限を有効化（テスト運用用）
-const params = new URLSearchParams(location.search);
 if (params.get('pro') === '1') {
   localStorage.setItem('isPro', '1');
   isPro = true;
