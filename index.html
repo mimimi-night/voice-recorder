@@ -100,18 +100,21 @@ if (params.get('pro') === '1') {
 }
 
 function updatePlanUI() {
+  const planTextEl = document.getElementById('planText');
   const remainEl = document.getElementById('remain');
   const startBtn = document.getElementById('startBtn');
 
+  if (!planTextEl) return;
+
   if (isPro) {
+    planTextEl.textContent = '現在: 無制限版';
     if (buyLink) buyLink.style.display = 'none';
-    if (planTextEl) planTextEl.textContent = '現在: 無制限版';
     if (startBtn) startBtn.disabled = false;
     return;
   }
 
-  if (remainEl) remainEl.textContent = String(freeRemain);
-  if (planTextEl) planTextEl.textContent = `現在: 無料版（残り ${freeRemain} 件）`;
+  planTextEl.innerHTML = `現在: 無料版（残り <span id="remain">${freeRemain}</span> 件）`;
+
   if (startBtn) startBtn.disabled = freeRemain <= 0;
 }
 
