@@ -81,15 +81,41 @@
         let audioChunks = [];
         let recordings = JSON.parse(localStorage.getItem("recordings") || "[]");
 const FREE_LIMIT = 3;
-let isPro = localStorage.getItem('isPro') === '1';
-        
-const buyLink = document.getElementById('buyLink');
-if (isPro && buyLink) buyLink.style.display = 'none';
 
-        const planTextEl = document.getElementById('planText');
-if (isPro && planTextEl) {
-  planTextEl.textContent = '現在: 無制限版';
+let isPro = localStorage.getItem('isPro') === '1';
+let freeRemain = parseInt(localStorage.getItem('freeRemain') ?? String(FREE_LIMIT), 10);
+
+if (Number.isNaN(freeRemain)) freeRemain = FREE_LIMIT;
+if (freeRemain < 0) freeRemain = 0;
+if (freeRemain > FREE_LIMIT) freeRemain = FREE_LIMIT;
+
+const buyLink = document.getElementById('buyLink');
+const planTextEl = document.getElementById('planText');
+
+const params = new URLSearchParams(location.search);
+if (params.get('pro') === '1') {
+  localStorage.setItem('isPro', '1');
+  isPro = true;
+  history.replaceState({}, '', location.pathname);
 }
+
+function updatePlanUI() {
+  const remainEl = document.getElementById('remain');
+  const startBtn = document.getElementById('startBtn');
+
+  if (isPro) {
+    if (buyLink) buyLink.style.display = 'none';
+    if (planTextEl) planTextEl.textContent = '現在: 無制限版';
+    if (startBtn) startBtn.disabled = false;
+    return;
+  }
+
+  if (remainEl) remainEl.textContent = String(freeRemain);
+  if (planTextEl) planTextEl.textContent = `現在: 無料版（残り ${freeRemain} 件）`;
+  if (startBtn) startBtn.disabled = freeRemain <= 0;
+}
+
+updatePlanUI();
         
 // ?pro=1 で着地したら無制限を有効化（テスト運用用）
 const params = new URLSearchParams(location.search);
