@@ -138,8 +138,6 @@ function updatePlanUI() {
 
   if (startBtn) startBtn.disabled = freeRemain <= 0;
 }
-
-updatePlanUI();
         
 // ?pro=1 で着地したら無制限を有効化（テスト運用用）
 const params = new URLSearchParams(location.search);
@@ -148,6 +146,7 @@ if (params.get('pro') === '1') {
   isPro = true;
   history.replaceState({}, '', location.pathname); // URLをきれいに戻す
 }
+updatePlanUI();
         
         // 録音番号を過去データから計算
         let recordingCount = recordings.length > 0
