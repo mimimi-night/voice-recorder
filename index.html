@@ -81,9 +81,18 @@ align-items:center;">
             .normalize("NFKC"); // 全角→半角、濁点などの正規化
     }
 
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        recognition.lang = 'ja-JP';
-        recognition.interimResults = true;
+const SpeechRecognitionClass =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+if (!SpeechRecognitionClass) {
+  alert("音声認識に対応していないブラウザです");
+}        
+const recognition = SpeechRecognitionClass
+  ? new SpeechRecognitionClass()
+  : null;
+        
+if (recognition) {
+  recognition.lang = 'ja-JP';
+}        recognition.interimResults = true;
         recognition.continuous = true;
 
         let isRecording = false;
