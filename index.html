@@ -418,5 +418,84 @@ unselectAllBtn.addEventListener('click', () => {
 
         renderRecordings();
     </script>
+
+<div id="footerLinks" style="
+position:fixed;
+right:10px;
+bottom:10px;
+background:#fff;
+border:1px solid #ccc;
+padding:8px 12px;
+border-radius:10px;
+font-size:12px;
+box-shadow:0 2px 6px rgba(0,0,0,0.1);
+z-index:9999;">
+<a href="#" onclick="openPolicy('contact')">お問い合わせ</a> |
+<a href="#" onclick="openPolicy('refund')">返金ポリシー</a> |
+<a href="#" onclick="openPolicy('cancel')">解約ポリシー</a> |
+<a href="#" onclick="openPolicy('promo')">プロモーション規約</a>
+</div>
+
+    <div id="policyModal" style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.5);
+z-index:10000;">
+<div style="
+background:#fff;
+max-width:600px;
+margin:60px auto;
+padding:20px;
+border-radius:12px;
+max-height:70vh;
+overflow:auto;">
+<button onclick="closePolicy()" style="float:right;">閉じる</button>
+<div id="policyContent"></div>
+</div>
+</div>
+
+    <script>
+function openPolicy(type){
+  const box = document.getElementById('policyModal');
+  const content = document.getElementById('policyContent');
+
+  if(type==='contact'){
+    content.innerHTML = `
+<h3>お問い合わせ</h3>
+<p>こちらのフォームからお問い合わせください。</p>
+<p><a href="https://forms.gle/Dzt1aaVhb5sdBBhP8" target="_blank">お問い合わせフォーム</a></p>
+`;
+  }
+
+  if(type==='refund'){
+    content.innerHTML = `
+<h3>返金ポリシー</h3>
+<p>決済日から7日以内は返金申請を受け付けます。以降は返金不可です。</p>
+`;
+  }
+
+  if(type==='cancel'){
+    content.innerHTML = `
+<h3>解約ポリシー</h3>
+<p>サブスクリプションはいつでも停止できます。停止後は次回請求は発生しません。</p>
+`;
+  }
+
+  if(type==='promo'){
+    content.innerHTML = `
+<h3>プロモーション規約</h3>
+<p>キャンペーンは予告なく終了する場合があります。</p>
+`;
+  }
+
+  box.style.display='block';
+}
+
+function closePolicy(){
+  document.getElementById('policyModal').style.display='none';
+}
+</script>
+    
 </body>
 </html>
