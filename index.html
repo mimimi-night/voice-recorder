@@ -437,6 +437,10 @@ function openPolicy(type) {
     text = "プロモーションは予告なく変更・終了する場合があります。";
   }
 
+     if (type === "transaction") {
+    text = "プロモーションは予告なく変更・終了する場合があります。";
+  }
+
   alert(text);
 }
         
@@ -456,7 +460,8 @@ z-index:9999;">
 <a href="#" onclick="openPolicy('contact')">お問い合わせ</a> |
 <a href="#" onclick="openPolicy('refund')">返金ポリシー</a> |
 <a href="#" onclick="openPolicy('cancel')">解約ポリシー</a> |
-<a href="#" onclick="openPolicy('promo')">プロモーション規約</a>
+<a href="#" onclick="openPolicy('promo')">プロモーション規約</a>　|
+<a href="#" onclick="openPolicy('transaction')">特定商取引法に基づく表記</a>
 </div>
 
     <div id="policyModal" style="
