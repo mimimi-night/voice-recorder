@@ -417,32 +417,6 @@ unselectAllBtn.addEventListener('click', () => {
         });
 
         renderRecordings();
-
-function openPolicy(type) {
-  let text = "";
-
-  if (type === "contact") {
-    text = "お問い合わせはフォームからお願いします。通常1週間以内に返信します。";
-  }
-
-  if (type === "refund") {
-    text = "返金は購入から7日以内に申請してください。Stripe経由で返金処理します。";
-  }
-
-  if (type === "cancel") {
-    text = "サブスクリプションはいつでも解約できます。次回更新前に停止されます。";
-  }
-
-  if (type === "promo") {
-    text = "プロモーションは予告なく変更・終了する場合があります。";
-  }
-
-     if (type === "transaction") {
-    text = "プロモーションは予告なく変更・終了する場合があります。";
-  }
-
-  alert(text);
-}
         
     </script>
 
